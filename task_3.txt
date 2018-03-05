@@ -1,0 +1,5 @@
+val db = sc.textFile("geotweets.tsv")
+val tweets = db.map(_.split('\t'))
+val countryTweets = tweets.map(x => x(1) + '\t' + x(11) + '\t' + x(12)).map(_.split('\t'))
+
+countryTweets.take(2)
