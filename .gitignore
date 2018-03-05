@@ -1,2 +1,6 @@
 geotweets.tsv
 stop_words.txt
+.idea/
+build.sbt
+project/
+target/
