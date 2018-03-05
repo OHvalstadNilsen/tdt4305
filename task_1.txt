@@ -1,40 +1,57 @@
+import java.io._
+
+
 //Load in file
 val db = sc.textFile("geotweets.tsv")
 val tweets = db.map(_.split('\t'))
 
 //1a - Number of tweets
-db.count()
+val totalCount = db.count()
 
 //1b - Number of distinct users
-tweets.map(x => x(6)).distinct().count();
+val userCount = tweets.map(x => x(6)).distinct().count()
 
 //1c - Number of distinct countries
-tweets.map(x => x(1)).distinct().count();
+val countryCount = tweets.map(x => x(1)).distinct().count()
 
 //1d - Number of distinct places
-tweets.map(x => x(4)).distinct().count();
+val placeCount = tweets.map(x => x(4)).distinct().count()
 
 //1e - Number of distinct languages
-tweets.map(x => x(5)).distinct().count();
+val langCount = tweets.map(x => x(5)).distinct().count()
 
 //1f - Minimum latitude
-val lats = tweets.map(x => x(11).toFloat);
-lats.min()
+val lats = tweets.map(x => x(11).toFloat)
+val minLat = lats.min()
 
 //1g - Minimum longitude
-val longs = tweets.map(x => x(12).toFloat);
-longs.min()
+val longs = tweets.map(x => x(12).toFloat)
+val minLong = longs.min()
 
 //1h - Maximum latitude
-lats.max()
+val maxLat = lats.max()
 
 //1i - Maximum longitude
-longs.max()
+val maxLong = longs.max()
 
 //1j - Average characters in tweets
 val tweetTexts = tweets.map(x => x(10));
 val tweetCount = tweetTexts.count().toFloat;
-tweetTexts.map(x => x.length).reduce((x,y) => x+y) / tweetCount
+val avgTweetChars = tweetTexts.map(x => x.length).reduce((x,y) => x+y) / tweetCount
 
 //1k - Average words in tweets
-tweetTexts.map(_.split(' ')).map(x => x.length).reduce((x,y) => x + y) / tweetCount
+val avgTweetWords = tweetTexts.map(_.split(' ')).map(x => x.length).reduce((x,y) => x + y) / tweetCount
+
+val pw = new PrintWriter(new File("result_1.tsv"))
+pw.write(totalCount 	+ "\n" +
+		userCount 		+ "\n" + 
+		countryCount 	+ "\n" + 
+		placeCount	 	+ "\n" + 
+		langCount 		+ "\n" +
+		minLat 			+ "\n" +
+		minLong 		+ "\n" + 
+		maxLat 			+ "\n" + 
+		maxLong 		+ "\n" + 
+		avgTweetChars 	+ "\n" +
+		avgTweetWords)
+pw.close
