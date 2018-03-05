@@ -1,0 +1,4 @@
+val db = sc.textFile("geotweets.tsv")
+db.count()
+
+val tweets = db.map(_.split('\t'))
