@@ -1,7 +1,17 @@
-val db = sc.textFile("geotweets.tsv")
-val tweets = db.map(_.split('\t'))
-val countryLats = tweets.map(c => (c(1), c(11).toFloat))
-val countryLongs = tweets.map(c => (c(1), c(12).toFloat))
-val countryTweets = tweets.map(c => c(1)).countByValue().filter{case (key, value) => v >= 10}
-countryLats.aggregateByKey(0.0)((accum, v) => accum + v, (v1, v2) => v1 + v2).take(10)
-countryTweets.take(10)
+//Get tweets
+val cdd = sc.textFile("geotweets.tsv")
+
+//Split by tabs, and get country, latitude, longitude
+val countryCoors = cdd.
+	map(_.split('\t')).
+	map(c => (c(1), (c(11).toFloat, c(12).toFloat)))
+
+//Sum lats and longs and count tweets by country, filter out <10 tweet countries and calculate average position
+val avgCoors = countryCoors.
+	aggregateByKey((0.0, 0.0, 0))(
+		(accum, v) => (accum._1 + v._1, accum._2 + v._2, accum._3 + 1),
+		(v1, v2) => (v1._1 + v2._1, v1._2 + v2._2, v1._3 + v2._3)).
+	filter{case (key, (value1, value2, value3)) => value3 > 10}.
+	mapValues(c => (1.0 * c._1 / c._3, 1.0 * c._2 / c._3))
+
+//TODO convert to right output format and write to file
