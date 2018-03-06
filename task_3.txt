@@ -1,5 +1,7 @@
 val db = sc.textFile("geotweets.tsv")
 val tweets = db.map(_.split('\t'))
-val countryTweets = tweets.map(x => x(1) + '\t' + x(11) + '\t' + x(12)).map(_.split('\t'))
-
-countryTweets.take(2)
+val countryLats = tweets.map(c => (c(1), c(11).toFloat))
+val countryLongs = tweets.map(c => (c(1), c(12).toFloat))
+val countryTweets = tweets.map(c => c(1)).countByValue().filter{case (key, value) => v >= 10}
+countryLats.aggregateByKey(0.0)((accum, v) => accum + v, (v1, v2) => v1 + v2).take(10)
+countryTweets.take(10)
