@@ -1,3 +1,5 @@
+import java.util.Date
+
 val tweetdb = sc.textFile("geotweets.tsv")
 val tweets = tweetdb.map(_.split('\t'))
 //local UTC time in seconds:
