@@ -1,6 +1,5 @@
 import java.io._
 
-
 val tweetdb = sc.textFile("geotweets.tsv")
 val tweets = tweetdb.map(_.split('\t'))
 //Extract country information
@@ -11,5 +10,5 @@ val countriesAlphabeticallyByValue = countryTweets.toSeq.sortBy(x => (-x._2, x._
 println('\n')
 //Write values to file:
 val pw = new PrintWriter(new File("result_2.tsv"))
-pw.write(countriesAlphabeticallyByValue.mkString("\n"))
+countriesAlphabeticallyByValue.foreach(x => pw.write(x._1 + '\t' + x._2 + "\n"))
 pw.close()
