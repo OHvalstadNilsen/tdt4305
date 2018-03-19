@@ -12,9 +12,14 @@ val UStweets = sample.map(_.split('\t')).
 //Remove words:
 //FIXME: Remove words does not work properly
 //FIXME: Very slow. Can this be done more effectively?
-val stop_words_removed = UStweets.subtract(stop_words).
+
+/*val stop_words_removed = UStweets.subtract(stop_words).
 	flatMap(x => x.split(" ")).
 	filter(w => w.length() > 1)
+*/
+val stop_words_removed = UStweets.flatMap(x => x.split(" ")).
+	filter(w => w.length > 1).
+	subtract(stop_words)
 
 val word_freqiencies = stop_words_removed.countByValue().
 	toSeq.sortBy(x => -x._2)
