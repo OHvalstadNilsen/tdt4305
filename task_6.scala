@@ -15,14 +15,13 @@ val stop_words_removed = UStweets.flatMap(x => x.split(" ")).
 	filter(w => w.length > 1).
 	subtract(stop_words)
 
-var word_freqiencies = stop_words_removed.countByValue().
+var word_frequencies = stop_words_removed.countByValue().
 	toSeq.sortBy(x => -x._2)
+
 println('\n')
-word_freqiencies = word_freqiencies.take(10)
+word_frequencies = word_frequencies.take(10)
 
 //Print values:
 val pw = new PrintWriter(new File("result_6.tsv"))
-pw.write(word_freqiencies.mkString("\n"))
+word_frequencies.foreach(x => pw.write(x._1 + '\t' + x._2 + "\n"))
 pw.close()
-
-//TODO: Change output format to tsv.
