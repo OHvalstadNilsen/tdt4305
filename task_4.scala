@@ -1,11 +1,11 @@
 import java.util.Date
 import java.io._
 /*
-Sorterer timesintervallene etter antall tweets (høy til lav) globalt.
+Sorts the time intervals according to their number og tweets globally.
 
-TODO: Gjøre dette landspesifikt og printe topintervallet.
-Nåværende output til fil: "timeintervall 	antall"
-Ønsket output til fil: "land 	timeintervall 	antall"
+TODO: Include country in output - it should not be global.
+Current outout to file: "timeintervall 	antall"
+Correct output to file: "land 	timeintervall 	antall"
 */
 
 val tweetdb = sc.textFile("geotweets.tsv")
@@ -21,10 +21,3 @@ val pw = new PrintWriter(new File("result_4.tsv"))
 localTimesUTC.foreach(x => pw.write(x._1 + "\t" + x._2 + "\n"))
 pw.close()
 
-/*
-1. Find local tweet times
-2. Find hourly time intervals (modulo 24)
-3. Categorize tweets in their time intevals --> groupBy()
-4. Sort time intervals from most to fewest tweets
-5. Write to output file 
-*/
