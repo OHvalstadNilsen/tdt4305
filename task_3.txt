@@ -1,3 +1,5 @@
+import java.io._
+
 //Get tweets
 val cdd = sc.textFile("geotweets.tsv")
 
@@ -14,4 +16,6 @@ val avgCoors = countryCoors.
 	filter{case (key, (value1, value2, value3)) => value3 > 10}.
 	mapValues(c => (1.0 * c._1 / c._3, 1.0 * c._2 / c._3))
 
-//TODO convert to right output format and write to file
+val pw = new PrintWriter(new File("result_3.tsv"))
+avgCoors.foreach(x => pw.write(x._1 + '\t' + x._2._1 + '\t' + x._2._2 + '\n'))
+pw.close()
